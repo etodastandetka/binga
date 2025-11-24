@@ -120,7 +120,11 @@ export default function HistoryPage() {
   }
 
   const getBankImage = (bank: string | null) => {
-    if (!bank) return null
+    // Дефолтная иконка банка, если банк не указан
+    const defaultBank = '/images/mbank.png'
+    
+    if (!bank) return defaultBank
+    
     const normalized = bank.toLowerCase()
     
     // Маппинг банков на изображения
@@ -149,7 +153,8 @@ export default function HistoryPage() {
       return '/images/companion.png'
     }
     
-    return null
+    // Если банк указан, но не распознан - возвращаем дефолтную иконку
+    return defaultBank
   }
 
   if (loading && transactions.length === 0) {
@@ -248,24 +253,14 @@ export default function HistoryPage() {
                 <div className="flex items-start justify-between">
                   {/* Левая часть: Аватар и информация о пользователе */}
                   <div className="flex items-start space-x-3 flex-1">
-                    {/* Иконка банка */}
-                    {getBankImage(tx.bank) ? (
-                      <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-gray-600 bg-gray-900">
-                        <img
-                          src={getBankImage(tx.bank) || ''}
-                          alt={tx.bank || 'Bank'}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                          <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </div>
-                      </div>
-                    )}
+                    {/* Иконка банка - всегда показываем иконку банка */}
+                    <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-gray-600 bg-gray-900">
+                      <img
+                        src={getBankImage(tx.bank)}
+                        alt={tx.bank || 'Bank'}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
 
                     {/* Информация о пользователе и транзакции */}
                     <div className="flex-1 min-w-0">
